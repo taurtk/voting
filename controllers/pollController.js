@@ -1,8 +1,6 @@
 const pollService = require('../services/pollService');
 const voteService = require('../services/voteService');
-const { emitVoteUpdate } = require('../server');
-const pollService = require('../services/pollService');
-const voteService = require('../services/voteService');
+const { emitVoteUpdate } = require('../utils/emitVoteUpdate');
 
 class PollController {
   async createPoll(req, res) {

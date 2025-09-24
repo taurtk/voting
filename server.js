@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const userRoutes = require('./routes/users');
 const pollRoutes = require('./routes/polls');
+const { setIo } = require('./utils/emitVoteUpdate');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,6 +16,8 @@ const io = socketIo(server, {
     methods: ["GET", "POST"]
   }
 });
+
+setIo(io);
 
 app.use(cors());
 app.use(express.json());
@@ -36,12 +39,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// Function to emit vote updates
-const emitVoteUpdate = (pollId, voteCounts) => {
-  io.to(pollId).emit('vote_cast', { pollId, voteCounts });
-};
-
-module.exports = { server, emitVoteUpdate };
+module.exports = server;
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
